@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { registerSchema, type RegisterSchemaData } from "~/schema/register";
 import { Label } from "./ui/label";
+import api from "~/api/config/axios";
 
 const AuthForm = () => {
   const {
@@ -34,6 +35,11 @@ const AuthForm = () => {
 
   const onSubmit = (data: RegisterSchemaData) => {
     console.log(data);
+    api.post("/auth/local/register",{
+      username: data.username,
+      email: data.email,
+      password: data.password
+    }).then(res => console.log(res)).catch(err => console.log(err));
   };
 
   return (
