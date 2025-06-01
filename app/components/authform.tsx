@@ -8,6 +8,8 @@ import { Button } from "./ui/button";
 import { registerSchema, type RegisterSchemaData } from "~/schema/register";
 import { Label } from "./ui/label";
 import api from "~/api/config/axios";
+import { toast } from "sonner";
+import { authKeys } from "~/constants/auth";
 
 const AuthForm = () => {
   const {
@@ -39,7 +41,23 @@ const AuthForm = () => {
       username: data.username,
       email: data.email,
       password: data.password
-    }).then(res => console.log(res)).catch(err => console.log(err));
+    }).then(
+      // TODO: Store the user token in the Cookies
+
+      res => {
+        localStorage.setItem(authKeys.TOKEN_KEY, res.data.jwt);
+        
+        toast.success("user regestered successfully",{
+          //  ! =  important in  Tailwind CSS
+            className: "!bg-green-500 !text-white",
+          });
+
+        console.log(res);
+      }).catch(err => toast.error(err.response.data.error.message,{
+    //  ! =  important in  Tailwind CSS
+      className: "!bg-red-500 !text-white",
+    })
+  );
   };
 
   return (
